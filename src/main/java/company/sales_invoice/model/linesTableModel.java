@@ -49,7 +49,8 @@ public class linesTableModel extends AbstractTableModel {
         invoiceItem invoiceItem=items.get(rowIndex);
 
         switch (columnIndex)
-        {case 0:
+        {
+            case 0:
             return invoiceItem.getSalesInvoice().getInvoiceNumber();
         case 1: 
             return invoiceItem.getProductName();

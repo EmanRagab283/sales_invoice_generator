@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package company.sales_invoice.view;
 
 import java.awt.GridLayout;
@@ -15,7 +12,7 @@ import javax.swing.JTextField;
  *
  * @author Eman Ragab
  */
-public class salesInvoice_items_Dialog extends JDialog {
+public class salesInvoiceItemsDialog extends JDialog {
     
      private JTextField itemNameField;
     private JTextField itemCountField;
@@ -26,7 +23,7 @@ public class salesInvoice_items_Dialog extends JDialog {
     private JButton okBtn;
     private JButton cancelBtn;
     
-    public salesInvoice_items_Dialog(sales_invoice_frame frame) {
+    public salesInvoiceItemsDialog(salesInvoiceFrame frame) {
         itemNameField = new JTextField(20);
         itemNameLbl = new JLabel("Item Name");
         
@@ -38,7 +35,7 @@ public class salesInvoice_items_Dialog extends JDialog {
         
         okBtn = new JButton("OK");
         cancelBtn = new JButton("Cancel");
-        
+       
         okBtn.setActionCommand("createLineOK");
         cancelBtn.setActionCommand("createLineCancel");
         

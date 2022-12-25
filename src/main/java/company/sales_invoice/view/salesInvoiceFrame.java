@@ -5,31 +5,22 @@
 package company.sales_invoice.view;
 
 import company.sales_invoice.controller.invoiceController;
-import company.sales_invoice.model.invoiceItem;
 import company.sales_invoice.model.invoicesModel;
 import company.sales_invoice.model.salesInvoice;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Eman Ragab
  */
-public class sales_invoice_frame extends javax.swing.JFrame {
+public class salesInvoiceFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form sales_invoice_frame
      */
-    public sales_invoice_frame() {
+    public salesInvoiceFrame() {
         initComponents();
     }
     
@@ -294,15 +285,7 @@ public class sales_invoice_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_createItem_ButtonActionPerformed
 
     private void deleteItem_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteItem_ButtonActionPerformed
-        // TODO add your handling code here:
-        //AS reset button
-       /* invoicenumber.setText("");
-        invoiceDate.setText("");
-        customerName.setText("");
-        invoiceTotal.setText("");*/
-       /////////////////////////////////////
-       //Exit Button
-          //System.exit(0);  
+    
         
     }//GEN-LAST:event_deleteItem_ButtonActionPerformed
 
@@ -311,10 +294,7 @@ public class sales_invoice_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_loadFile_MenuItemActionPerformed
 
     private void deleteInvoice_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteInvoice_ButtonActionPerformed
-        // TODO add your handling code here:
-       // DefaultTableModel table_model=(DefaultTableModel)invoiceTable.getModel();
-       // int select_Row=invoiceTable.getSelectedRow();
-        //table_model.removeRow(select_Row);
+      
         
     }//GEN-LAST:event_deleteInvoice_ButtonActionPerformed
 
@@ -335,14 +315,16 @@ public class sales_invoice_frame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(sales_invoice_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(salesInvoiceFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(sales_invoice_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(salesInvoiceFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(sales_invoice_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(salesInvoiceFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(sales_invoice_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(salesInvoiceFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -352,7 +334,7 @@ public class sales_invoice_frame extends javax.swing.JFrame {
 
      java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new sales_invoice_frame().setVisible(true);
+                new salesInvoiceFrame().setVisible(true);
             }
         });
     }

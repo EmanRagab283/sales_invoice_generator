@@ -5,9 +5,9 @@ import company.sales_invoice.model.invoiceItem;
 import company.sales_invoice.model.invoicesModel;
 import company.sales_invoice.model.linesTableModel;
 import company.sales_invoice.model.salesInvoice;
-import company.sales_invoice.view.salesInvoice_Dialog;
-import company.sales_invoice.view.salesInvoice_items_Dialog;
-import company.sales_invoice.view.sales_invoice_frame;
+import company.sales_invoice.view.salesInvoiceDialog;
+import company.sales_invoice.view.salesInvoiceItemsDialog;
+import company.sales_invoice.view.salesInvoiceFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,12 +17,17 @@ import static java.lang.Integer.parseInt;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,9 +35,9 @@ import javax.swing.event.ListSelectionListener;
  */
 public class invoiceController implements ActionListener,ListSelectionListener {
 
-    private sales_invoice_frame myframe;
-    private salesInvoice_Dialog invoice_Dialog;
-    private salesInvoice_items_Dialog Invoice_items_Dialog ;
+    private salesInvoiceFrame myframe;
+    private salesInvoiceDialog invoice_Dialog;
+    private salesInvoiceItemsDialog InvoiceItemsDialog ;
     
      @Override
     public void valueChanged(ListSelectionEvent e)
@@ -41,10 +46,12 @@ public class invoiceController implements ActionListener,ListSelectionListener {
         if(selected_index != -1){
         System.out.print("selected rows"  + selected_index);
         salesInvoice current_invoice=myframe.getSalesInvoices().get(selected_index);
+        
         myframe.getInvoicenumberlLabel().setText(""+current_invoice.getInvoiceNumber()); 
         myframe.getCustomerNameLabel().setText(current_invoice.getCustomerName());
         myframe.getInvoiceDateLabel().setText(current_invoice.getInvoiceDate());
         myframe.getInvoiceTotalLabel().setText(""+current_invoice.getTotal()); 
+       
         linesTableModel linestablemodel= new linesTableModel(current_invoice.getInvoiceItems());
         myframe.getItemsTable().setModel(linestablemodel);
         linestablemodel.fireTableDataChanged();
@@ -59,7 +66,7 @@ public class invoiceController implements ActionListener,ListSelectionListener {
     
     
     
-    public invoiceController(sales_invoice_frame myframe)
+    public invoiceController(salesInvoiceFrame myframe)
     {
         this.myframe=myframe;
     }
@@ -67,7 +74,7 @@ public class invoiceController implements ActionListener,ListSelectionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand=e.getActionCommand();
-    System.out.println("Action"+actionCommand);
+    System.out.println("Action" +" " +actionCommand);
     
     switch(actionCommand){
         case"Load File":
@@ -77,28 +84,28 @@ public class invoiceController implements ActionListener,ListSelectionListener {
             Save_File();
             break;
         case"Create New Invoice":
-            Create_New_Invoice();
+            CreateNewInvoice();
             break;
         case"Delete Invoice":
-            Delete_Invoice();
+            DeleteInvoice();
             break;     
         case"create New Item":
             createNewItem();
             break;
-        case"delete Item":
+        case"deleteItem":
             deleteItem();
-            break;  
-             case"createInvoiceok":
-            create_Invoice_ok();
+            break;   //createInvoiceCancel  createInvoiceOK
+             case"createInvoiceOK":
+            createInvoiceok();
             break;
              case"createInvoiceCancel":
-           create_Invoice_Cancel();
+           createInvoiceCancel();
+            break;   // createLineOK createLineCancel
+            case"createLineOK":
+            createlineok();
             break;
-            case"create line ok":
-            create_line_ok();
-            break;
-        case"create line Cancel":
-           create_line_Cancel();
+        case"createLineCancel":
+           createlineCancel();
             break;
         
     }
@@ -237,14 +244,21 @@ public class invoiceController implements ActionListener,ListSelectionListener {
         
     
 
-    private void Create_New_Invoice()
+    private void CreateNewInvoice()
     {
-        invoice_Dialog= new salesInvoice_Dialog(myframe);
+        invoice_Dialog= new salesInvoiceDialog(myframe);
         invoice_Dialog.setVisible(true);
     }
 
-  
-    private void Delete_Invoice()
+    private void createNewItem()
+    {
+        InvoiceItemsDialog=new salesInvoiceItemsDialog(myframe);
+        InvoiceItemsDialog.setVisible(true);
+    }
+    
+    
+    
+    private void DeleteInvoice()
     {
      int selectedRow=myframe.getInvoiceTable().getSelectedRow();
         if(selectedRow!=-1)
@@ -255,97 +269,87 @@ public class invoiceController implements ActionListener,ListSelectionListener {
         }
     }
 
-    private void createNewItem()
-    {
-        Invoice_items_Dialog=new salesInvoice_items_Dialog(myframe);
-        Invoice_items_Dialog.setVisible(true);
+  
+    
+      private void deleteItem() {
+        int selectedRow = myframe.getItemsTable().getSelectedRow();
+       // if (selectedRow != -1) {
+            linesTableModel lineModel =(linesTableModel) myframe.getItemsTable().getModel();
+            lineModel.getItems().remove(selectedRow);
+            lineModel.fireTableDataChanged();
+             myframe.getInvoicesModel().fireTableDataChanged();   
+       // }
     }
     
-    private void deleteItem()
-    {
-         int selectedRow=myframe.getItemsTable().getSelectedRow();
-        if(selectedRow!=-1)
-        {
-              linesTableModel lines_Model = (linesTableModel) myframe.getItemsTable().getModel();
-             lines_Model.getItems().remove(selectedRow);
-               lines_Model.fireTableDataChanged();
-              myframe.getInvoicesModel().fireTableDataChanged();
-            
-        }   
-    }
-
-     private void create_Invoice_ok() {
+    
+    
+ 
+     private void createInvoiceok() {
+        
+        DateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
          String date = invoice_Dialog.getInvDateField().getText();
         String customer_name = invoice_Dialog.getCustNameField().getText();
         int num = myframe.getNextNumber();        
         try {
-            String[] dateParts = date.split("-");  
-            if (dateParts.length < 3) {
-                JOptionPane.showMessageDialog(myframe, "Wrong date format", 
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                int day = Integer.parseInt(dateParts[0]);
-                int month = Integer.parseInt(dateParts[1]);
-                int year = Integer.parseInt(dateParts[2]);
-                if (day > 31 || month > 12) {
-                    JOptionPane.showMessageDialog(myframe, "Wrong date format", 
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    salesInvoice salesInvoice = new salesInvoice(num, date, customer_name);
+            formatter.parse(date);
+                salesInvoice salesInvoice = new salesInvoice(num, date, customer_name);
                     myframe.getSalesInvoices().add(salesInvoice);
                     myframe.getInvoicesModel().fireTableDataChanged();
                     invoice_Dialog.setVisible(false);
                     invoice_Dialog.dispose();
                     invoice_Dialog = null;
-                }
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(myframe, "Wrong date format", "Error", JOptionPane.ERROR_MESSAGE);
+  
         }
-
+        catch(ParseException x)
+        
+        {    JOptionPane.showMessageDialog(myframe,
+                              "Wrong date format", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+  
     }
-    
-
-    private void create_Invoice_Cancel() {
-        invoice_Dialog.setVisible(false);
-        invoice_Dialog.dispose();
-        invoice_Dialog=null;
-    }
-    
-      private void create_line_Cancel() {
      
-        Invoice_items_Dialog.setVisible(false);
-        Invoice_items_Dialog.dispose();
-        Invoice_items_Dialog=null;
-    }
-
-
-    
-   private void create_line_ok() {
-      String item = Invoice_items_Dialog .getItemNameField().getText();
-        String countStr = Invoice_items_Dialog .getItemCountField().getText();
-        String priceStr = Invoice_items_Dialog .getItemPriceField().getText();
+     
+        private void createlineok() {
+      String item = InvoiceItemsDialog .getItemNameField().getText();
+        String countStr = InvoiceItemsDialog .getItemCountField().getText();
+        String priceStr = InvoiceItemsDialog .getItemPriceField().getText();
         int count = Integer.parseInt(countStr);
         double price = Double.parseDouble(priceStr);
         int selected_Invoice = myframe.getInvoiceTable().getSelectedRow();
                
         if (selected_Invoice != -1) {
             salesInvoice invoice = myframe.getSalesInvoices().get(selected_Invoice);
-                    
             invoiceItem invoiceItem = new invoiceItem(item, price, count, invoice);
-            invoice.getInvoiceItems().add(invoiceItem);
-                 
-            linesTableModel  linesTableModel = (linesTableModel ) myframe.getItemsTable().getModel();
-                    
+            invoice.getInvoiceItems().add(invoiceItem);      
+            linesTableModel  linesTableModel = (linesTableModel ) myframe.getItemsTable().getModel();      
             linesTableModel.fireTableDataChanged();
             myframe.getInvoicesModel().fireTableDataChanged();
                   
         }
-        Invoice_items_Dialog.setVisible(false);
-        Invoice_items_Dialog.dispose();
-        Invoice_items_Dialog = null;    
+        InvoiceItemsDialog.setVisible(false);
+        InvoiceItemsDialog.dispose();
+        InvoiceItemsDialog = null;    
     
     }
+
+     
+    
+
+    private void createInvoiceCancel() 
+    {
+        invoice_Dialog.setVisible(false);
+        invoice_Dialog.dispose();
+        invoice_Dialog=null;
+    }
+    
+      private void createlineCancel() {
+        InvoiceItemsDialog.setVisible(false);
+        InvoiceItemsDialog.dispose();
+        InvoiceItemsDialog=null;
+    }
+
+
+    
 
   
 

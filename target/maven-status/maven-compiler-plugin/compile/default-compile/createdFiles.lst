@@ -7,7 +7,6 @@ company\sales_invoice\model\invoicesModel.class
 company\sales_invoice\view\salesInvoiceDialog.class
 company\sales_invoice\view\salesInvoiceFrame$2.class
 company\sales_invoice\model\invoiceItem.class
-company\sales_invoice\view\salesInvoiceFrame$6.class
 company\sales_invoice\view\salesInvoiceItemsDialog.class
 company\sales_invoice\view\salesInvoiceFrame$1.class
 company\sales_invoice\model\salesInvoice.class

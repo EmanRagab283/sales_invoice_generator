@@ -1,6 +1,5 @@
 
 package company.sales_invoice.controller;
-
 import company.sales_invoice.model.invoiceItem;
 import company.sales_invoice.model.invoicesModel;
 import company.sales_invoice.model.linesTableModel;
@@ -87,7 +86,7 @@ public class invoiceController implements ActionListener,ListSelectionListener {
    
     }
 
-     @Override
+    @Override
     public void valueChanged(ListSelectionEvent e)
     {
         int selected_index=myframe.getInvoiceTable().getSelectedRow();
@@ -107,12 +106,12 @@ public class invoiceController implements ActionListener,ListSelectionListener {
         myframe.getItemsTable().setModel(linestablemodel);
         linestablemodel.fireTableDataChanged();
         
-        
+      //  myframe.getInvoicesModel().fireTableDataChanged();
         }
         
     }
- 
-   
+
+
     private void Load_File() 
     {
         JFileChooser fileChooser=new JFileChooser();
@@ -255,40 +254,23 @@ public class invoiceController implements ActionListener,ListSelectionListener {
         InvoiceItemsDialog.setVisible(true);
     }
     
-     private void deleteItem() {
-        int selectedInvoice=myframe.getInvoiceTable().getSelectedRow();
-        int selectedItem=myframe.getItemsTable().getSelectedRow();
-        if(selectedItem != -1 && selectedInvoice != -1)
-        {
-            salesInvoice myInvoice=myframe.getSalesInvoices().get(selectedInvoice);
-            myInvoice.getInvoiceItems().remove(selectedItem);
-            
-            linesTableModel lineModel=new linesTableModel(myInvoice.getInvoiceItems());
-            myframe.getItemsTable().setModel(lineModel);
-            lineModel.fireTableDataChanged();
-        }}
-     /*private void deleteItem() {
-         int selectedItem= myframe.getItemsTable().getSelectedRow();
-         myframe.getItemsTable().setRowSelectionAllowed(true);
-        // myframe.getItemsTable().setRowSelectionInterval(0,0);
-         System.out.println(selectedItem);
-         
-         if(selectedItem !=-1)
-         {
+private void deleteItem() {
+         int selectedItem= myframe.getItemsTable().getSelectedRow();         
+         if(selectedItem !=-1 && selectedItem !=-1 )
+         {    System.out.println(selectedItem);
              linesTableModel model=(linesTableModel) myframe.getItemsTable().getModel();
              model.getItems().remove(selectedItem);
              model.fireTableDataChanged();
              myframe.getInvoicesModel().fireTableDataChanged();
      
          }
-
      }
-    */
     private void DeleteInvoice()
     {
      int selectedRow=myframe.getInvoiceTable().getSelectedRow();
         if(selectedRow!=-1)
         {
+             System.out.println(selectedRow);
             myframe.getSalesInvoices().remove(selectedRow);
             myframe.getInvoicesModel().fireTableDataChanged();
         

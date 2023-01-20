@@ -1,7 +1,6 @@
 company\sales_invoice\view\salesInvoiceFrame$4.class
 company\sales_invoice\model\linesTableModel.class
 company\sales_invoice\view\salesInvoiceFrame$3.class
-company\sales_invoice\controller\invoiceController.class
 company\sales_invoice\view\salesInvoiceFrame$5.class
 company\sales_invoice\model\invoicesModel.class
 company\sales_invoice\view\salesInvoiceDialog.class

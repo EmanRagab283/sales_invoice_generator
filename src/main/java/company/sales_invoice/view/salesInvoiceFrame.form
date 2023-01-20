@@ -274,7 +274,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="delItem">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Delete Item"/>
+        <Property name="text" type="java.lang.String" value="delete Item"/>
+        <Property name="actionCommand" type="java.lang.String" value="Delete Item"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="delItemActionPerformed"/>

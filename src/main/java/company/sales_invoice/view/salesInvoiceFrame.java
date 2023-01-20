@@ -18,22 +18,6 @@ public class salesInvoiceFrame extends javax.swing.JFrame {
 
     
     
-    public JLabel getCustomerNameLabel() {
-        return customerNameLabel;
-    }
-
-    public JLabel getInvoiceDateLabel() {
-        return invoiceDateLabel;
-    }
-
-    public JLabel getInvoiceTotalLabel() {
-        return invoiceTotalLabel;
-    }
-
-    public JLabel getInvoicenumberlLabel() {
-        return invoicenumberlLabel;
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,7 +102,8 @@ public class salesInvoiceFrame extends javax.swing.JFrame {
             }
         });
 
-        delItem.setText("Delete Item");
+        delItem.setText("delete Item");
+        delItem.setActionCommand("Delete Item");
         delItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delItemActionPerformed(evt);
@@ -296,6 +281,28 @@ public class salesInvoiceFrame extends javax.swing.JFrame {
 private ArrayList <salesInvoice> salesInvoices;
     
    private invoicesModel invoicesModel;
+  //
+   
+   
+   //
+   
+    public JLabel getCustomerNameLabel() {
+        return customerNameLabel;
+    }
+
+    public JLabel getInvoiceDateLabel() {
+        return invoiceDateLabel;
+    }
+
+    public JLabel getInvoiceTotalLabel() {
+        return invoiceTotalLabel;
+    }
+
+    public JLabel getInvoicenumberlLabel() {
+        return invoicenumberlLabel;
+    }
+
+   
 
     public invoicesModel getInvoicesModel() {
           if (invoicesModel == null) {
@@ -312,10 +319,20 @@ private ArrayList <salesInvoice> salesInvoices;
     public JTable getInvoiceTable() {
         return invoiceTable;
     }
+    
+
+    public void setInvoiceTable(JTable invoiceTable) {
+        this.invoiceTable = invoiceTable;
+    }
+
+    public void setItemsTable(JTable itemsTable) {
+        this.itemsTable = itemsTable;
+    }
 
     public JTable getItemsTable() {
         return itemsTable;
     }
+    
 
     public invoiceController getInvoiceController() {
         return invoiceController;
@@ -326,7 +343,9 @@ private ArrayList <salesInvoice> salesInvoices;
         int num=0;
         for(salesInvoice invoice:salesInvoices){
             if(invoice.getInvoiceNumber()>num)
+            {
                 num=invoice.getInvoiceNumber();
+            }
         }
         return ++num;
     }
@@ -338,7 +357,15 @@ private ArrayList <salesInvoice> salesInvoices;
     public void setSalesInvoices(ArrayList<salesInvoice> salesInvoices) {
         this.salesInvoices = salesInvoices;
     }
-    //////////////////////////////////////
+
+    public JButton getDelItem() {
+        return delItem;
+    }
+
+    public void setDelItem(JButton delItem) {  
+        this.delItem = delItem;
+    }
+//////////////////////////////////////
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createInvoice_Button;
     private javax.swing.JButton createItem_Button;

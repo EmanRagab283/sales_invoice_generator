@@ -90,6 +90,7 @@ public class invoiceController implements ActionListener,ListSelectionListener {
     public void valueChanged(ListSelectionEvent e)
     {
         int selected_index=myframe.getInvoiceTable().getSelectedRow();
+        int SelectedItem =myframe.getItemsTable().getSelectedRow();
         
         System.out.println("selected row" +" " + selected_index);
 
@@ -105,8 +106,8 @@ public class invoiceController implements ActionListener,ListSelectionListener {
         linesTableModel linestablemodel= new linesTableModel(current_invoice.getInvoiceItems());
         myframe.getItemsTable().setModel(linestablemodel);
         linestablemodel.fireTableDataChanged();
-        
-      //  myframe.getInvoicesModel().fireTableDataChanged();
+        if(SelectedItem != -1){
+            myframe.getInvoicesModel().fireTableDataChanged();}
         }
         
     }
